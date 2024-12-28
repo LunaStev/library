@@ -1,0 +1,23 @@
+import("types");
+import("utils");
+
+fun send_get_request(url: String): HttpResponse {
+    var request = HttpRequest {
+        method = "GET";
+        url = url;
+        headers = create_map();
+        body = "";
+    };
+    return execute_request(request);
+}
+
+fun send_post_request(url: string, body: string): HttpsResponse {
+    var request = HttpRequest {
+        method = "POST";
+        url = url;
+        headers = create_map();
+        body = body;
+    };
+    request.headers["content-Type"] = "application/json";
+    return execute_request(request);
+}

@@ -1,0 +1,19 @@
+fun tests() {
+    var test_cases: [str] = [
+        "{\"name\": \"John\", \"age\": 30, \"is_student\": false}",
+        "{\"name\": \"Alice\", \"courses\": [\"Math\", \"Science\"]}",
+        "{\"person\": {\"name\": \"Bob\", \"age\": 25}, \"active\": true}",
+        "{\"version\": \"1.0.0\", \"date\": \"2024-11-01\", \"items\": [\"item1\", \"item2\"]}",
+        "{\"empty\": {}}"
+    ];
+
+    for (var test in test_cases) {
+        var result = loads(test);
+        println("Test case: " + test);
+        println("Result: " + dumps(result));
+    }
+}
+
+fun main() {
+    test();
+}
