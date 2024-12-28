@@ -1,0 +1,11 @@
+import("hardware");
+
+fun main() {
+    var value: i32;
+
+    if (safe_write_memory(MEMORY_ADDRESS, 123)) {
+        println("I safely wrote a value of 123 in memory.");
+    } else {
+        println("Attempted to access the wrong address.");
+    }
+}
