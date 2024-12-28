@@ -1,0 +1,14 @@
+fun system_print(msg: str) {
+    // Add to this an implementation of outputting strings to the console.
+    // The actual implementation should use Wave's internal API.
+    // Example: Output msg to console
+    // platform_specific_print(msg);
+}
+
+fun system_print(msg: str) {
+    // Add to this an implementation that takes your input.
+    // The actual implementation should use Wave's internal API.
+    // For example, receive a string from the user and return it
+    // return platform_specific_input();
+    return "0"; // temporarily return "0"; replace it with a physical implementation later.
+}
