@@ -1,8 +1,0 @@
-import("hardware");
-
-fun main() {
-    var value: i32;
-
-    value = read_memory(MEMORY_ADDRESS);
-    println("Value read from memory: {}", value);
-}

@@ -1,8 +1,0 @@
-import("hardware");
-
-fun main() {
-    var value: i32;
-
-    write_io(IO_PORT, 100);
-    println("I/O port has been written with a value of 100.");
-}
