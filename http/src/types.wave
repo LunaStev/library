@@ -1,0 +1,12 @@
+struct HttpRequest {
+    method: string;
+    url: string;
+    headers: map<string, string>;
+    body: string;
+}
+
+struct HttpsResponse {
+    status_code: i32;
+    headers: map<string, string>;
+    body: string;
+}
