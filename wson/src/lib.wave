@@ -9,7 +9,7 @@ fun WSONParseError(message: str, line: i32 = -1, column: i32 = -1) {
     }
 }
 
-fun remove_comments(wson_str :str) :str {
+fun remove_comments(wson_str :str) -> str {
     var lines :str = wson_str.split("\n");
     var cleaned_lines :str = [];
     var in_block_comment :bool = false;
@@ -79,7 +79,7 @@ fun parse_value(value :str, line :i32, column :i32) {
     WSONParseError("Invalid value: " + value, line, column);
 }
 
-fun parse_array(array_str :str, line :i32, column :i32) :any {
+fun parse_array(array_str :str, line :i32, column :i32) -> any {
     array_str = array_str.substr(1, array_str.len() - 2).trim(); // [] Remove
     var items :any = [];
     var current_item :str = "";
@@ -114,7 +114,7 @@ fun parse_array(array_str :str, line :i32, column :i32) :any {
     return items;
 }
 
-fun convert_wson_to_dict(wson_str :str, start_line :i32 = 1, start_column :i32 = 1): map {
+fun convert_wson_to_dict(wson_str :str, start_line :i32 = 1, start_column :i32 = 1) -> map {
     wson_str = wson_str.trim();
     if (!(wson_str.startsWith("{") && wson_str.endsWith("}"))) {
         WSONParseError("WSON format must start and end with curly braces.", start_line, start_column);
@@ -175,11 +175,11 @@ fun convert_wson_to_dict(wson_str :str, start_line :i32 = 1, start_column :i32 =
     return data;
 }
 
-fun serialize_wson(data :map, indent :str = ""): str {
+fun serialize_wson(data :map, indent :str = "") -> str {
     return "{\n" + serialize_dict(data, indent + "    ") + "\n" + indent + "}";
 }
 
-fun serialize_dict(data :map, indent :str = ""): str {
+fun serialize_dict(data :map, indent :str = "") -> str {
     var items :str = [];
     for (var key in data.keys()) {
         var value = data[key];
@@ -198,7 +198,7 @@ fun serialize_dict(data :map, indent :str = ""): str {
     return items.join(",\n\n");
 }
 
-fun serialize_list(data :any, indent :str = "") :str {
+fun serialize_list(data :any, indent :str = "") -> str {
     var items :str = [];
     for (var item in data) {
         if (item is map) {
@@ -216,15 +216,15 @@ fun serialize_list(data :any, indent :str = "") :str {
     return items.join(",\n");
 }
 
-fun dumps(data :any) :str {
+fun dumps(data :any) -> str {
     return serialize_wson(data);
 }
 
-fun loads(wson_str :str) :any {
+fun loads(wson_str :str) -> any {
     return parse_wson(wson_str);
 }
 
-fun validate_wson(wson_str :str) :bool {
+fun validate_wson(wson_str :str) -> bool {
     try {
         parse_wson(wson_str);
         return true;
