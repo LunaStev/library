@@ -9,16 +9,16 @@ fun WSONParseError(message: str, line: i32 = -1, column: i32 = -1) {
     }
 }
 
-fun remove_comments(wson_str: str): str {
-    var lines: [str] = wson_str.split("\n");
-    var cleaned_lines: [str] = [];
-    var in_block_comment: bool = false;
+fun remove_comments(wson_str :str) :str {
+    var lines :str = wson_str.split("\n");
+    var cleaned_lines :str = [];
+    var in_block_comment :bool = false;
 
     for (var i: i32 = 0; i < lines.len(); i++) {
-        var line: str = lines[i];
+        var line :str = lines[i];
 
         if (in_block_comment) {
-            var end_index: i32 = line.find("*/");
+            var end_index :i32 = line.find("*/");
             if (end_index != -1) {
                 line = line.substr(end_index + 2);
                 in_block_comment = false;
@@ -28,8 +28,8 @@ fun remove_comments(wson_str: str): str {
         }
 
         while (line.contains("/*")) {
-            var start_index: i32 = line.find("/*");
-            var end_index: i32 = line.find("*/", start_index + 2);
+            var start_index :i32 = line.find("/*");
+            var end_index :i32 = line.find("*/", start_index + 2);
             if (end_index != -1) {
                 line = line.substr(0, start_index);
             } else {
@@ -39,8 +39,8 @@ fun remove_comments(wson_str: str): str {
             }
         }
 
-        var comment_index: i32 = line.find("//");
-        var hash_index: i32 = line.find("#");
+        var comment_index :i32 = line.find("//");
+        var hash_index :i32 = line.find("#");
         if (comment_index != -1) {
             line = line.substr(0, comment_index);
         } else if (hash_index != -1) {
@@ -54,7 +54,7 @@ fun remove_comments(wson_str: str): str {
     return cleaned_lines.join("\n");
 }
 
-fun parse_value(value: str, line: i32, column: i32) {
+fun parse_value(value :str, line :i32, column :i32) {
     value = value.trim();
     if (value == "") {
         return null;
@@ -79,15 +79,15 @@ fun parse_value(value: str, line: i32, column: i32) {
     WSONParseError("Invalid value: " + value, line, column);
 }
 
-fun parse_array(array_str: str, line: i32, column: i32): [any] {
+fun parse_array(array_str :str, line :i32, column :i32) :any {
     array_str = array_str.substr(1, array_str.len() - 2).trim(); // [] Remove
-    var items: [any] = [];
-    var current_item: str = "";
-    var brace_count: i32 = 0;
-    var bracket_count: i32 = 0;
+    var items :any = [];
+    var current_item :str = "";
+    var brace_count :i32 = 0;
+    var bracket_count :i32 = 0;
 
-    for (var i: i32 = 0; i < array_str.len(); i++) {
-        var char: str = array_str[i];
+    for (var i :i32 = 0; i < array_str.len(); i++) {
+        var char :str = array_str[i];
 
         if (char == "{") {
             brace_count += 1;
@@ -114,24 +114,24 @@ fun parse_array(array_str: str, line: i32, column: i32): [any] {
     return items;
 }
 
-fun convert_wson_to_dict(wson_str: str, start_line: i32 = 1, start_column: i32 = 1): map {
+fun convert_wson_to_dict(wson_str :str, start_line :i32 = 1, start_column :i32 = 1): map {
     wson_str = wson_str.trim();
     if (!(wson_str.startsWith("{") && wson_str.endsWith("}"))) {
         WSONParseError("WSON format must start and end with curly braces.", start_line, start_column);
     }
 
     wson_str = wson_str.substr(1, wson_str.len() - 2); // {} Remove
-    var data: map = {};
-    var key: str = "";
-    var value: str = "";
-    var in_key: bool = true;
-    var brace_count: i32 = 0;
-    var bracket_count: i32 = 0;
-    var line: i32 = start_line;
-    var column: i32 = start_column;
+    var data :map = {};
+    var key :str = "";
+    var value :str = "";
+    var in_key :bool = true;
+    var brace_count :i32 = 0;
+    var bracket_count :i32 = 0;
+    var line :i32 = start_line;
+    var column :i32 = start_column;
 
-    for (var i: i32 = 0; i < wson_str.len(); i++) {
-        var char: str = wson_str[i];
+    for (var i :i32 = 0; i < wson_str.len(); i++) {
+        var char :str = wson_str[i];
 
         if (char == "\n") {
             line += 1;
@@ -175,12 +175,12 @@ fun convert_wson_to_dict(wson_str: str, start_line: i32 = 1, start_column: i32 =
     return data;
 }
 
-fun serialize_wson(data: map, indent: str = ""): str {
+fun serialize_wson(data :map, indent :str = ""): str {
     return "{\n" + serialize_dict(data, indent + "    ") + "\n" + indent + "}";
 }
 
-fun serialize_dict(data: map, indent: str = ""): str {
-    var items: [str] = [];
+fun serialize_dict(data :map, indent :str = ""): str {
+    var items :str = [];
     for (var key in data.keys()) {
         var value = data[key];
         if (value is map) {
@@ -198,8 +198,8 @@ fun serialize_dict(data: map, indent: str = ""): str {
     return items.join(",\n\n");
 }
 
-fun serialize_list(data: [any], indent: str = ""): str {
-    var items: [str] = [];
+fun serialize_list(data :any, indent :str = "") :str {
+    var items :str = [];
     for (var item in data) {
         if (item is map) {
             items.append(indent + serialize_wson(item, indent));
@@ -216,15 +216,15 @@ fun serialize_list(data: [any], indent: str = ""): str {
     return items.join(",\n");
 }
 
-fun dumps(data: any): str {
+fun dumps(data :any) :str {
     return serialize_wson(data);
 }
 
-fun loads(wson_str: str): any {
+fun loads(wson_str :str) :any {
     return parse_wson(wson_str);
 }
 
-fun validate_wson(wson_str: str): bool {
+fun validate_wson(wson_str :str) :bool {
     try {
         parse_wson(wson_str);
         return true;
