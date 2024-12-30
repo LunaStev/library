@@ -1,7 +1,7 @@
 import("types");
 import("utils");
 
-fun send_get_request(url: String): HttpResponse {
+fun send_get_request(url :str) -> HttpResponse {
     var request = HttpRequest {
         method = "GET";
         url = url;
@@ -11,7 +11,7 @@ fun send_get_request(url: String): HttpResponse {
     return execute_request(request);
 }
 
-fun send_post_request(url: string, body: string): HttpsResponse {
+fun send_post_request(url :str, body :str) -> HttpsResponse {
     var request = HttpRequest {
         method = "POST";
         url = url;

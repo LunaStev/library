@@ -1,12 +1,12 @@
 struct HttpRequest {
-    method: string;
-    url: string;
-    headers: map<string, string>;
-    body: string;
+    method :str;
+    url :str;
+    headers = map<string, string>;
+    body :str;
 }
 
 struct HttpsResponse {
-    status_code: i32;
-    headers: map<string, string>;
-    body: string;
+    status_code :i32;
+    headers = map<string, string>;
+    body :str;
 }
