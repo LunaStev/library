@@ -1,6 +1,6 @@
 import("types");
 
-fun parse_response(raw_response: string): HttpResponse {
+fun parse_response(raw_response :str) -> HttpResponse {
     var response = HttpResponse {
         status_code = 200;
         headers = create_map();

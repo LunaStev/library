@@ -1,7 +1,7 @@
 import("hardware");
 
 fun main() {
-    var value: i32;
+    var value :i32;
 
     value = direct_access_memory(MEMORY_ADDRESS);
     println("Read value from direct memory: {}", value);

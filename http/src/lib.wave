@@ -3,10 +3,10 @@ import("response");
 import("utils");
 import("types");
 
-fun send_get(url: string): HttpResponse {
+fun send_get(url :str) -> HttpResponse {
     return send_get_request(url);
 }
 
-fun send_post(url: string, body: string): HttpResponse {
+fun send_post(url :str, body :str) -> HttpResponse {
     return send_post_request(url, body);
 }

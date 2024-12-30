@@ -1,11 +1,11 @@
 import("sys");
 
-fun println(msg: str) {
+fun println(msg :str) {
     // Output string to console
     system_print(msg);
 }
 
-fun input(prompt: str, out: var i32) {
+fun input(prompt :str, out :i32) {
     // Output prompt message
     println(prompt);
     // Receive input from the user
