@@ -1,0 +1,69 @@
+import("iosys");
+
+// Define a quantum state
+struct QuantumState {
+    qubits: u32;        // Number of qubits (unsigned 32-bit integer)
+    state: array<f64>;  // Amplitude vector (64-bit floating-point numbers)
+}
+
+// Create a new quantum state
+fun new_state(qubits: u32) -> QuantumState {
+    var size :u32 = 1 << qubits;                                // 2^qubits
+    var initial_state :array<f64> = array(size * 2, 0.0);       // Complex numbers need real and imaginary parts
+    initial_state[0] = 1.0;                                     // Initialize to |0⟩
+    return QuantumState {
+        qubits: qubits,
+        state: initial_state
+    };
+}
+
+// Apply a quamtum gate to the state (mutating state)
+fun apply_gate(var state: QuantumState, gate :array<f64>, target :u32) -> QuantumState {
+    var size :u32 = len(state.state) / 2;   // Divide by 2 because complex numbers are split into real and imaginary parts
+    var new_state :array<f64> = array(len(state.state), 0.0);
+
+    for (var i :u32 = 0; i < size; i++) {
+        for (var j :u32 = 0; j < size; j++) {
+            var real_part :f64 = gate[2 * (i * size + j)] * state.state[2 * j] - gate[2 * (i * size + j) + 1] *state.state[2 * j + 1];
+            var imag_part :f64 = gate[2 * (i * size + j)] * state.state[2 * j + 1] + gate[2 * (i * size + j) + 1] * state.state[2 * j];
+            new_state[2 * i] += real_part;
+            new_state[2 * i + 1] += imag_part;
+        }
+    }
+
+    return QuantumState {
+        qubits: state.qubits,
+        state: new_state
+    };
+}
+
+// Example gate: Hadamard gate for a single qubit
+fun hadamard() -> array<f64> {
+    var sqrt2 :f64 = 1.0 / sqrt(2.0);
+    return [
+        sqrt2, 0.0, sqrt2, 0.0, // Row 0: Real and imaginary parts
+        sqrt2, 0.0, -sqrt2, 0.0 // Row 1: Real and imaginary parts
+    ];
+}
+
+// Measure the quantum state
+fun measure(imm state: QuantumState) -> u32 {
+    var size :u32 = len(state.state) / 2;
+    var probabilities : array<f64> = array(size, 0.0);
+
+    for (var i :u32 = 0; i < size; i++) {
+        probabilities[i] = state.state[2 * i] * state.state[2 * i] + state.state[2 * i + 1] * state.state[2 * i + 1];
+    }
+
+    var rnd :64 = random(); // Generate a random number between 0 and 1
+    var cumulative :f64 = 0.0;
+
+    for (var i :u32 = 0; i < size; i++) {
+        cumulative += probabilities[i];
+        if rnd <= cumulative {
+            return i; // Return the measured state
+        }
+    }
+
+    return 0;   // Default fallback
+}
