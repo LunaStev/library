@@ -31,4 +31,9 @@ fun apply_gate(var state: QuantumState, gate :array<f64>, target :u32) -> Quantu
         }
     }
 
+    return QuantumState {
+        qubits: state.qubits,
+        state: new_state
+    };
+}
 
