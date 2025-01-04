@@ -17,5 +17,18 @@ fun new_state(qubits: u32) -> QuantumState {
     };
 }
 
+// Apply a quamtum gate to the state (mutating state)
+fun apply_gate(var state: QuantumState, gate :array<f64>, target :u32) -> QuantumState {
+    var size :u32 = len(state.state) / 2;   // Divide by 2 because complex numbers are split into real and imaginary parts
+    var new_state :array<f64> = array(len(state.state), 0.0);
+
+    for (var i :u32 = 0; i < size; i++) {
+        for (var j :u32 = 0; j < size; j++) {
+            var real_part :f64 = gate[2 * (i * size + j)] * state.state[2 * j] - gate[2 * (i * size + j) + 1] *state.state[2 * j + 1];
+            var imag_part :f64 = gate[2 * (i * size + j)] * state.state[2 * j + 1] + gate[2 * (i * size + j) + 1] * state.state[2 * j];
+            new_state[2 * i] += real_part;
+            new_state[2 * i + 1] += imag_part;
+        }
+    }
 
 
