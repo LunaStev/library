@@ -37,3 +37,11 @@ fun apply_gate(var state: QuantumState, gate :array<f64>, target :u32) -> Quantu
     };
 }
 
+// Example gate: Hadamard gate for a single qubit
+fun hadamard() -> array<f64> {
+    var sqrt2 :f64 = 1.0 / sqrt(2.0);
+    return [
+        sqrt2, 0.0, sqrt2, 0.0, // Row 0: Real and imaginary parts
+        sqrt2, 0.0, -sqrt2, 0.0 // Row 1: Real and imaginary parts
+    ];
+}
