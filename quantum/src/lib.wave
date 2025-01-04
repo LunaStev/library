@@ -6,5 +6,16 @@ struct QuantumState {
     state: array<f64>;  // Amplitude vector (64-bit floating-point numbers)
 }
 
+// Create a new quantum state
+fun new_state(qubits: u32) -> QuantumState {
+    var size :u32 = 1 << qubits;                                // 2^qubits
+    var initial_state :array<f64> = array(size * 2, 0.0);       // Complex numbers need real and imaginary parts
+    initial_state[0] = 1.0;                                     // Initialize to |0⟩
+    return QuantumState {
+        qubits: qubits,
+        state: initial_state
+    };
+}
+
 
 
