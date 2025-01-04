@@ -45,3 +45,25 @@ fun hadamard() -> array<f64> {
         sqrt2, 0.0, -sqrt2, 0.0 // Row 1: Real and imaginary parts
     ];
 }
+
+// Measure the quantum state
+fun measure(imm state: QuantumState) -> u32 {
+    var size :u32 = len(state.state) / 2;
+    var probabilities : array<f64> = array(size, 0.0);
+
+    for (var i :u32 = 0; i < size; i++) {
+        probabilities[i] = state.state[2 * i] * state.state[2 * i] + state.state[2 * i + 1] * state.state[2 * i + 1];
+    }
+
+    var rnd :64 = random(); // Generate a random number between 0 and 1
+    var cumulative :f64 = 0.0;
+
+    for (var i :u32 = 0; i < size; i++) {
+        cumulative += probabilities[i];
+        if rnd <= cumulative {
+            return i; // Return the measured state
+        }
+    }
+
+    return 0;   // Default fallback
+}
