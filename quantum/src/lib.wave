@@ -1,2 +1,10 @@
 import("iosys");
 
+// Define a quantum state
+struct QuantumState {
+    qubits: u32;        // Number of qubits (unsigned 32-bit integer)
+    state: array<f64>;  // Amplitude vector (64-bit floating-point numbers)
+}
+
+
+
