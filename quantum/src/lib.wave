@@ -55,7 +55,7 @@ fun measure(imm state: QuantumState) -> u32 {
         probabilities[i] = state.state[2 * i] * state.state[2 * i] + state.state[2 * i + 1] * state.state[2 * i + 1];
     }
 
-    var rnd :64 = random(); // Generate a random number between 0 and 1
+    var rnd :f64 = random(); // Generate a random number between 0 and 1
     var cumulative :f64 = 0.0;
 
     for (var i :u32 = 0; i < size; i++) {
